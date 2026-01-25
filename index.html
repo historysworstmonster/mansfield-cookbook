@@ -63,12 +63,6 @@
     </section>
 
     <section class="card">
-        <h2>Digital Recipe Archive</h2>
-        <input type="text" id="recipeSearch" class="search-box" placeholder="Search by name or theme (e.g. 'Soup', 'Sally')..." onkeyup="filterRecipes()">
-        <div id="recipeGrid" class="recipe-grid">Loading archive...</div>
-    </section>
-
-    <section class="card">
         <h2>Foodie Recommendations</h2>
         <div id="recList">Loading...</div>
         <div class="input-group" style="margin-top:15px;">
@@ -76,6 +70,12 @@
             <input type="text" id="contentIn" placeholder="Share your favorite...">
             <button class="btn" onclick="saveToSheet('Recommendations', ['typeIn', 'contentIn'])">Share</button>
         </div>
+    </section>
+
+     <section class="card">
+        <h2>Digital Recipe Archive</h2>
+        <input type="text" id="recipeSearch" class="search-box" placeholder="Search by name or theme (e.g. 'Soup', 'Sally')..." onkeyup="filterRecipes()">
+        <div id="recipeGrid" class="recipe-grid">Loading archive...</div>
     </section>
 </div>
 
