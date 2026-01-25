@@ -1,220 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mansfield Cook Book Club</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --lib-navy: #003366;
-            --lib-light-blue: #e6eff7;
-            --lib-gold: #b59410;
-            --white: #ffffff;
-            --text-dark: #2c2c2c;
-        }
+<style>
+    /* New styles for the Archive Search */
+    .search-box {
+        width: 100%;
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 2px solid var(--lib-light-blue);
+        border-radius: 8px;
+        font-size: 1rem;
+        font-family: 'Fredoka', sans-serif;
+    }
+    .recipe-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+    .recipe-card {
+        background: var(--lib-light-blue);
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        transition: 0.3s;
+    }
+    .recipe-card:hover { border-color: var(--lib-gold); transform: translateY(-3px); }
+    .recipe-card h3 { margin: 0 0 10px 0; color: var(--lib-navy); font-size: 1.1rem; }
+    .recipe-card p { margin: 0 0 15px 0; font-size: 0.9rem; color: #555; }
+    .view-btn { 
+        display: inline-block;
+        background: var(--lib-navy);
+        color: white;
+        padding: 8px 15px;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 0.8rem;
+    }
+</style>
 
-        body { font-family: 'Fredoka', sans-serif; background-color: #f4f4f4; color: var(--text-dark); margin: 0; line-height: 1.6; }
-
-        #countdown-container {
-            background: var(--lib-navy); color: white; padding: 15px; text-align: center; 
-            font-weight: 600; font-size: 1.1rem; border-bottom: 4px solid var(--lib-gold);
-        }
-
-        header {
-            text-align: center; padding: 70px 20px;
-            background-image: linear-gradient(rgba(0, 51, 102, 0.7), rgba(0, 51, 102, 0.7)), url('https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=1600&q=80');
-            background-size: cover; background-position: center; color: white;
-        }
-
-        header h1 { font-size: 3rem; margin: 0; font-weight: 700; }
-
-        .container { max-width: 950px; margin: 40px auto; padding: 0 20px; }
-
-        .section-card {
-            background: var(--white); padding: 35px; margin-bottom: 35px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08); border-left: 6px solid var(--lib-navy); border-radius: 4px;
-        }
-
-        h2 { font-size: 1.8rem; margin-top: 0; color: var(--lib-navy); border-bottom: 2px solid var(--lib-light-blue); padding-bottom: 8px; }
-
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        th { text-align: left; background: var(--lib-light-blue); color: var(--lib-navy); padding: 12px; }
-        td { padding: 12px; border-bottom: 1px solid #eee; }
-
-        .input-area { background: #fdfdfd; padding: 25px; border: 1px solid #eee; border-radius: 8px; margin-top: 20px; }
-        .input-group { display: flex; gap: 10px; flex-wrap: wrap; }
-        
-        input, select { padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-family: 'Fredoka', sans-serif; flex: 1; }
-
-        .btn {
-            background: var(--lib-navy); color: white; padding: 12px 25px; border: none; border-radius: 6px;
-            font-weight: 700; cursor: pointer; transition: 0.3s;
-        }
-        .btn:hover { background: var(--lib-gold); transform: translateY(-1px); }
-
-        .suggestion-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
-        .vote-count { font-weight: 700; color: var(--lib-gold); font-size: 1.3rem; margin-right: 15px; }
-        .vote-btn { background: var(--lib-light-blue); color: var(--lib-navy); border: 1px solid var(--lib-navy); padding: 5px 12px; border-radius: 4px; font-weight: 700; cursor: pointer; }
-        
-        .delete-btn { color: #ccc; cursor: pointer; font-size: 1.1rem; margin-left: 10px; border: none; background: none; transition: 0.3s; }
-        .delete-btn:hover { color: #e2725b; }
-
-        .rec-item { border-left: 4px solid var(--lib-gold); padding-left: 15px; margin-bottom: 12px; }
-    </style>
-</head>
-<body>
-
-<div id="countdown-container">
-    ⏳ Next Feast: <span id="timer">Loading...</span>
-</div>
-
-<header>
-    <h1>Mansfield Cook Book Club</h1>
-</header>
-
-<div class="container">
-    <section class="section-card">
-        <h2>Club Corner</h2>
-        <p>A community culinary project in partnership with the Mansfield Public Library. Sign up for a dish or suggest a future theme!</p>
+<section class="section-card">
+        <h2>Digital Recipe Archive</h2>
+        <p>Access PDFs from our past meetings. Search by ingredient or cookbook theme!</p>
+        <input type="text" id="recipeSearch" class="search-box" placeholder="Search recipes (e.g. 'Cake', 'Preppy', 'Salad')..." onkeyup="filterRecipes()">
+        <div id="recipeGrid" class="recipe-grid">Loading archive...</div>
     </section>
-
-    <section class="section-card">
-        <h2>Dish Signup: The Preppy Kitchen</h2>
-        <table id="dishTable">
-            <thead><tr><th>Member</th><th>Dish Name</th><th>Source</th></tr></thead>
-            <tbody><tr><td colspan="3" style="text-align:center;">Retrieving list...</td></tr></tbody>
-        </table>
-        <div class="input-area">
-            <div class="input-group">
-                <input type="text" id="nameIn" placeholder="Your Name">
-                <input type="text" id="dishIn" placeholder="What are you making?">
-                <input type="text" id="sourceIn" placeholder="Cookbook Source">
-                <button class="btn" onclick="saveRSVP()">Sign Up</button>
-            </div>
-        </div>
-    </section>
-
-    <section class="section-card">
-        <h2>Upcoming Meetings</h2>
-        <table>
-            <thead><tr><th>Date</th><th>Subject</th><th>Location</th></tr></thead>
-            <tbody>
-                <tr><td>Feb 19, 2026 @ 6:00 PM</td><td><strong>The Preppy Kitchen</strong></td><td>Mansfield Public Library</td></tr>
-                <tr><td>Mar 19, 2026 @ 6:00 PM</td><td><strong>Ina Garten</strong></td><td>Mansfield Public Library</td></tr>
-            </tbody>
-        </table>
-    </section>
-
-    <section class="section-card">
-        <h2>Vote for Next Month's Theme</h2>
-        <div id="suggestionList">Loading...</div>
-        <div class="input-area"><div class="input-group">
-            <input type="text" id="suggIn" placeholder="Suggest a cookbook...">
-            <button class="btn" onclick="saveSugg()">Submit Idea</button>
-        </div></div>
-    </section>
-
-    <section class="section-card">
-        <h2>Foodie Recommendations</h2>
-        <div id="recList">Loading...</div>
-        <div class="input-area"><div class="input-group">
-            <select id="typeIn">
-                <option value="Podcast">Podcast</option>
-                <option value="Book">Book/Doc</option>
-                <option value="Restaurant">Restaurant</option>
-                <option value="Gadget">Gadget</option>
-            </select>
-            <input type="text" id="contentIn" placeholder="Share a recommendation...">
-            <button class="btn" onclick="saveRec()">Share</button>
-        </div></div>
-    </section>
-</div>
 
 <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw2WG916_lR3TeOLlR_6TI-3bs2HUsjiG_6n2_4s_8JLqFdXjZIQPRHtRp6Mdogs4Zw/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwlN15cv0IrHEuTR7hMP02F8D4bufqW9O2zo_do8YueBTe0NeS70VUvJtwTT983MJYc/exec";
+    let allRecipes = []; // To store for searching
 
     window.onload = function() {
         loadData("RSVPs", "dishTable");
         loadData("Suggestions", "suggestionList");
         loadData("Recommendations", "recList");
+        loadArchive(); // New function
     };
 
-    async function loadData(sheetName, elementId) {
+    async function loadArchive() {
         if (WEB_APP_URL.includes("PASTE_YOUR_NEW_URL")) return;
-        try {
-            const response = await fetch(`${WEB_APP_URL}?sheet=${sheetName}`);
-            const data = await response.json();
-            const element = document.getElementById(elementId);
-
-            if (sheetName === "RSVPs") {
-                const tbody = element.getElementsByTagName('tbody')[0];
-                tbody.innerHTML = data.length ? "" : "<tr><td colspan='3' style='text-align:center;'>No entries yet!</td></tr>";
-                data.forEach(row => {
-                    const tr = tbody.insertRow();
-                    tr.innerHTML = `<td>${row[0]}</td><td>${row[1]}</td><td>${row[2]} <button class="delete-btn" onclick="deleteEntry('RSVPs', '${row[1]}', 'dishTable')">×</button></td>`;
-                });
-            } else if (sheetName === "Suggestions") {
-                element.innerHTML = data.length ? "" : "No suggestions yet.";
-                data.sort((a, b) => (b[1] || 0) - (a[1] || 0));
-                data.forEach(row => {
-                    element.innerHTML += `
-                        <div class="suggestion-item">
-                            <span>${row[0]}</span>
-                            <div class="vote-controls">
-                                <span class="vote-count">${row[1] || 0}</span>
-                                <button class="vote-btn" onclick="handleVote('${row[0]}')">↑ Vote</button>
-                                <button class="delete-btn" onclick="deleteEntry('Suggestions', '${row[0]}', 'suggestionList')">×</button>
-                            </div>
-                        </div>`;
-                });
-            } else if (sheetName === "Recommendations") {
-                element.innerHTML = data.length ? "" : "No recommendations yet.";
-                data.forEach(row => {
-                    element.innerHTML += `<div class="rec-item"><strong>${row[0]}:</strong> ${row[1]} <button class="delete-btn" onclick="deleteEntry('Recommendations', '${row[1]}', 'recList')">×</button></div>`;
-                });
-            }
-        } catch (e) { console.log("Load error", e); }
+        const response = await fetch(`${WEB_APP_URL}?sheet=Archive`);
+        allRecipes = await response.json();
+        displayRecipes(allRecipes);
     }
 
-    async function handleVote(ideaId) {
-        await fetch(`${WEB_APP_URL}?action=upvote&id=${encodeURIComponent(ideaId)}&sheet=Suggestions`, { method: "POST", mode: "no-cors" });
-        setTimeout(() => loadData("Suggestions", "suggestionList"), 800);
+    function displayRecipes(data) {
+        const grid = document.getElementById('recipeGrid');
+        grid.innerHTML = data.length ? "" : "No recipes found.";
+        data.forEach(row => {
+            grid.innerHTML += `
+                <div class="recipe-card">
+                    <h3>${row[0]}</h3>
+                    <p>Theme: ${row[1]}</p>
+                    <a href="${row[2]}" target="_blank" class="view-btn">📄 View PDF</a>
+                    <button class="delete-btn" style="float:right" onclick="deleteEntry('Archive', '${row[0]}', 'recipeGrid')">×</button>
+                </div>`;
+        });
     }
 
-    async function deleteEntry(sheetName, idValue, elementId) {
-        if(!confirm("Remove this entry?")) return;
-        await fetch(`${WEB_APP_URL}?action=delete&id=${encodeURIComponent(idValue)}&sheet=${sheetName}`, { method: "POST", mode: "no-cors" });
-        setTimeout(() => loadData(sheetName, elementId), 1000);
+    function filterRecipes() {
+        const term = document.getElementById('recipeSearch').value.toLowerCase();
+        const filtered = allRecipes.filter(r => 
+            r[0].toLowerCase().includes(term) || r[1].toLowerCase().includes(term)
+        );
+        displayRecipes(filtered);
     }
 
-    async function sendToSheet(sheetName, dataArray, elementId) {
-        const finalData = sheetName === "Suggestions" ? [dataArray[0], 0] : dataArray;
-        await fetch(`${WEB_APP_URL}?sheet=${sheetName}`, { method: "POST", mode: "no-cors", body: JSON.stringify(finalData) });
-        setTimeout(() => loadData(sheetName, elementId), 1200);
-    }
-
-    function saveRSVP() {
-        const n = document.getElementById('nameIn').value, d = document.getElementById('dishIn').value, s = document.getElementById('sourceIn').value;
-        if(n && d) { sendToSheet("RSVPs", [n, d, s], "dishTable"); document.getElementById('nameIn').value=''; document.getElementById('dishIn').value=''; document.getElementById('sourceIn').value=''; }
-    }
-
-    function saveSugg() {
-        const v = document.getElementById('suggIn').value;
-        if(v) { sendToSheet("Suggestions", [v], "suggestionList"); document.getElementById('suggIn').value=''; }
-    }
-
-    function saveRec() {
-        const t = document.getElementById('typeIn').value, c = document.getElementById('contentIn').value;
-        if(c) { sendToSheet("Recommendations", [t, c], "recList"); document.getElementById('contentIn').value=''; }
-    }
-
-    const nextMeeting = new Date("Feb 19, 2026 18:00:00").getTime();
-    setInterval(function() {
-        const now = new Date().getTime(), diff = nextMeeting - now;
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24)), hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)), mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        document.getElementById("timer").innerHTML = days + "d " + hours + "h " + mins + "m ";
-    }, 1000);
+    // ... (Keep your other functions: loadData, handleVote, deleteEntry, etc.) ...
 </script>
-</body>
-</html>
