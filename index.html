@@ -1,74 +1,42 @@
-<style>
-    /* New styles for the Archive Search */
-    .search-box {
-        width: 100%;
-        padding: 15px;
-        margin-bottom: 20px;
-        border: 2px solid var(--lib-light-blue);
-        border-radius: 8px;
-        font-size: 1rem;
-        font-family: 'Fredoka', sans-serif;
-    }
-    .recipe-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 20px;
-    }
-    .recipe-card {
-        background: var(--lib-light-blue);
-        padding: 20px;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-        transition: 0.3s;
-    }
-    .recipe-card:hover { border-color: var(--lib-gold); transform: translateY(-3px); }
-    .recipe-card h3 { margin: 0 0 10px 0; color: var(--lib-navy); font-size: 1.1rem; }
-    .recipe-card p { margin: 0 0 15px 0; font-size: 0.9rem; color: #555; }
-    .view-btn { 
-        display: inline-block;
-        background: var(--lib-navy);
-        color: white;
-        padding: 8px 15px;
-        text-decoration: none;
-        border-radius: 4px;
-        font-weight: bold;
-        font-size: 0.8rem;
-    }
-</style>
-
-<section class="section-card">
-        <h2>Digital Recipe Archive</h2>
-        <p>Access PDFs from our past meetings. Search by ingredient or cookbook theme!</p>
-        <input type="text" id="recipeSearch" class="search-box" placeholder="Search recipes (e.g. 'Cake', 'Preppy', 'Salad')..." onkeyup="filterRecipes()">
-        <div id="recipeGrid" class="recipe-grid">Loading archive...</div>
-    </section>
-
 <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwlN15cv0IrHEuTR7hMP02F8D4bufqW9O2zo_do8YueBTe0NeS70VUvJtwTT983MJYc/exec";
-    let allRecipes = []; // To store for searching
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxV8_dX5ejMfHFkvqS2S8VdFMDWtx-dXPuCQJbq3AFalqMcwerpU1eKd_CZoR3gN6Ra/exec";
+    let allRecipes = []; 
 
     window.onload = function() {
         loadData("RSVPs", "dishTable");
         loadData("Suggestions", "suggestionList");
         loadData("Recommendations", "recList");
-        loadArchive(); // New function
+        loadArchive(); 
     };
 
     async function loadArchive() {
         if (WEB_APP_URL.includes("PASTE_YOUR_NEW_URL")) return;
-        const response = await fetch(`${WEB_APP_URL}?sheet=Archive`);
-        allRecipes = await response.json();
-        displayRecipes(allRecipes);
+        try {
+            console.log("Attempting to load Archive...");
+            const response = await fetch(`${WEB_APP_URL}?sheet=Archive`);
+            allRecipes = await response.json();
+            console.log("Archive data received:", allRecipes);
+            displayRecipes(allRecipes);
+        } catch (e) {
+            console.error("Archive Error:", e);
+        }
     }
 
     function displayRecipes(data) {
         const grid = document.getElementById('recipeGrid');
-        grid.innerHTML = data.length ? "" : "No recipes found.";
+        if (!grid) return;
+        grid.innerHTML = ""; // Clear the "Loading" text
+        
+        if (data.length === 0) {
+            grid.innerHTML = "No recipes found.";
+            return;
+        }
+
         data.forEach(row => {
             grid.innerHTML += `
                 <div class="recipe-card">
                     <h3>${row[0]}</h3>
-                    <p>Theme: ${row[1]}</p>
+                    <p>Source: ${row[1] || 'Club Archive'}</p>
                     <a href="${row[2]}" target="_blank" class="view-btn">📄 View PDF</a>
                     <button class="delete-btn" style="float:right" onclick="deleteEntry('Archive', '${row[0]}', 'recipeGrid')">×</button>
                 </div>`;
@@ -78,10 +46,11 @@
     function filterRecipes() {
         const term = document.getElementById('recipeSearch').value.toLowerCase();
         const filtered = allRecipes.filter(r => 
-            r[0].toLowerCase().includes(term) || r[1].toLowerCase().includes(term)
+            (r[0] && r[0].toLowerCase().includes(term)) || 
+            (r[1] && r[1].toLowerCase().includes(term))
         );
         displayRecipes(filtered);
     }
 
-    // ... (Keep your other functions: loadData, handleVote, deleteEntry, etc.) ...
+    // ... (Keep your loadData, deleteEntry, handleVote, and sendToSheet functions here) ...
 </script>
