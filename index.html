@@ -1,46 +1,76 @@
 <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxV8_dX5ejMfHFkvqS2S8VdFMDWtx-dXPuCQJbq3AFalqMcwerpU1eKd_CZoR3gN6Ra/exec";
+    const WEB_APP_URL = "AKfycbzoGpvJLQsxZCQL77jp4R3PD189bjkCdFbZ9o8qUHXLHtjdi6FPCxW1rF5u-NXl3ChM"; // <--- Put your /exec URL here!
     let allRecipes = []; 
 
     window.onload = function() {
+        // Try to load the basic lists
         loadData("RSVPs", "dishTable");
         loadData("Suggestions", "suggestionList");
         loadData("Recommendations", "recList");
+        
+        // Try to load the Archive
         loadArchive(); 
     };
 
     async function loadArchive() {
-        if (WEB_APP_URL.includes("PASTE_YOUR_NEW_URL")) return;
+        if (WEB_APP_URL.includes("PASTE_YOUR_NEW_URL")) {
+            console.error("URL not updated!");
+            return;
+        }
         try {
-            console.log("Attempting to load Archive...");
             const response = await fetch(`${WEB_APP_URL}?sheet=Archive`);
-            allRecipes = await response.json();
-            console.log("Archive data received:", allRecipes);
-            displayRecipes(allRecipes);
+            const data = await response.json();
+            allRecipes = data; 
+            
+            // This part turns the data into the cards you see
+            const grid = document.getElementById('recipeGrid');
+            if (grid) {
+                grid.innerHTML = ""; // This REMOVES the "Loading archive..." text
+                
+                if (allRecipes.length === 0) {
+                    grid.innerHTML = "Archive is empty.";
+                } else {
+                    allRecipes.forEach(row => {
+                        if (row[0]) { // Only draw if there is a name
+                            grid.innerHTML += `
+                                <div class="recipe-card">
+                                    <h3>${row[0]}</h3>
+                                    <p>Source: ${row[1] || 'Club Archive'}</p>
+                                    <a href="${row[2]}" target="_blank" class="view-btn">📄 View PDF</a>
+                                </div>`;
+                        }
+                    });
+                }
+            }
         } catch (e) {
-            console.error("Archive Error:", e);
+            console.error("The Archive failed to load:", e);
+            document.getElementById('recipeGrid').innerHTML = "Failed to load. Check console for errors.";
         }
     }
 
-    function displayRecipes(data) {
-        const grid = document.getElementById('recipeGrid');
-        if (!grid) return;
-        grid.innerHTML = ""; // Clear the "Loading" text
-        
-        if (data.length === 0) {
-            grid.innerHTML = "No recipes found.";
-            return;
-        }
+    // This is the generic loader for the other tables (RSVP, etc.)
+    async function loadData(sheetName, elementId) {
+        try {
+            const response = await fetch(`${WEB_APP_URL}?sheet=${sheetName}`);
+            const data = await response.json();
+            const element = document.getElementById(elementId);
+            if (!element) return;
 
-        data.forEach(row => {
-            grid.innerHTML += `
-                <div class="recipe-card">
-                    <h3>${row[0]}</h3>
-                    <p>Source: ${row[1] || 'Club Archive'}</p>
-                    <a href="${row[2]}" target="_blank" class="view-btn">📄 View PDF</a>
-                    <button class="delete-btn" style="float:right" onclick="deleteEntry('Archive', '${row[0]}', 'recipeGrid')">×</button>
-                </div>`;
-        });
+            if (sheetName === "RSVPs") {
+                const tbody = element.getElementsByTagName('tbody')[0];
+                tbody.innerHTML = "";
+                data.forEach(row => {
+                    const tr = tbody.insertRow();
+                    tr.innerHTML = `<td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td>`;
+                });
+            } else if (sheetName === "Suggestions") {
+                element.innerHTML = "";
+                data.sort((a, b) => (b[1] || 0) - (a[1] || 0));
+                data.forEach(row => {
+                    element.innerHTML += `<div class="suggestion-item"><span>${row[0]}</span><span class="vote-count">${row[1] || 0}</span></div>`;
+                });
+            }
+        } catch (e) { console.log("Error loading " + sheetName, e); }
     }
 
     function filterRecipes() {
@@ -49,8 +79,11 @@
             (r[0] && r[0].toLowerCase().includes(term)) || 
             (r[1] && r[1].toLowerCase().includes(term))
         );
-        displayRecipes(filtered);
+        // This is a simplified display for filtering
+        const grid = document.getElementById('recipeGrid');
+        grid.innerHTML = "";
+        filtered.forEach(row => {
+            grid.innerHTML += `<div class="recipe-card"><h3>${row[0]}</h3><p>${row[1]}</p><a href="${row[2]}" target="_blank" class="view-btn">📄 View PDF</a></div>`;
+        });
     }
-
-    // ... (Keep your loadData, deleteEntry, handleVote, and sendToSheet functions here) ...
 </script>
