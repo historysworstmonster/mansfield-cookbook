@@ -16,18 +16,20 @@
         table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
         th { text-align: left; background: var(--lib-light); padding: 10px; color: var(--lib-navy); }
         td { padding: 10px; border-bottom: 1px solid #eee; }
-        .recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; margin-top: 20px; }
-        .recipe-card { background: var(--lib-light); padding: 15px; border-radius: 6px; position: relative; border: 1px solid #d1dee9; }
-        .recipe-card h3 { margin: 0 0 10px; font-size: 1.1rem; color: var(--lib-navy); }
-        .btn { background: var(--lib-navy); color: white; padding: 10px 15px; border: none; border-radius: 4px; text-decoration: none; font-weight: bold; cursor: pointer; display: inline-block; font-family: 'Fredoka'; font-size: 0.9rem; }
+        .recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-top: 20px; }
+        .recipe-card { background: var(--lib-light); padding: 20px; border-radius: 8px; position: relative; border: 1px solid #d1dee9; display: flex; flex-direction: column; justify-content: space-between; }
+        .recipe-card h3 { margin: 0 0 5px; font-size: 1.1rem; color: var(--lib-navy); }
+        .recipe-card p { margin: 0 0 15px; font-style: italic; color: #666; font-size: 0.9rem; }
+        .btn { background: var(--lib-navy); color: white; padding: 10px 15px; border: none; border-radius: 4px; text-decoration: none; font-weight: bold; cursor: pointer; text-align: center; font-family: 'Fredoka'; }
         .btn:hover { background: var(--lib-gold); }
-        .search-box { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 4px; font-family: 'Fredoka'; box-sizing: border-box; }
-        .delete-btn { color: #ccc; cursor: pointer; float: right; border: none; background: none; font-size: 1.2rem; line-height: 1; }
+        .search-box { width: 100%; padding: 12px; margin-bottom: 20px; border: 2px solid var(--lib-light); border-radius: 4px; font-family: 'Fredoka'; box-sizing: border-box; }
+        .delete-btn { color: #ccc; cursor: pointer; float: right; border: none; background: none; font-size: 1.2rem; }
         .delete-btn:hover { color: #cc0000; }
-        .input-group { display: flex; gap: 10px; flex-wrap: wrap; background: #f9f9f9; padding: 15px; border-radius: 4px; border: 1px solid #eee; }
+        .input-group { display: flex; gap: 10px; flex-wrap: wrap; background: #f9f9f9; padding: 15px; border-radius: 4px; }
         input, select { padding: 10px; border: 1px solid #ddd; border-radius: 4px; flex: 1; font-family: 'Fredoka'; }
-        .suggestion-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
-        .vote-btn { background: var(--lib-light); color: var(--lib-navy); border: 1px solid var(--lib-navy); padding: 4px 10px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .suggestion-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; }
+        .vote-btn { background: white; color: var(--lib-navy); border: 1px solid var(--lib-navy); padding: 5px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .vote-btn:hover { background: var(--lib-navy); color: white; }
     </style>
 </head>
 <body>
@@ -62,7 +64,7 @@
 
     <section class="card">
         <h2>Digital Recipe Archive</h2>
-        <input type="text" id="recipeSearch" class="search-box" placeholder="Search past recipes..." onkeyup="filterRecipes()">
+        <input type="text" id="recipeSearch" class="search-box" placeholder="Search by name or theme (e.g. 'Soup', 'Sally')..." onkeyup="filterRecipes()">
         <div id="recipeGrid" class="recipe-grid">Loading archive...</div>
     </section>
 
@@ -70,8 +72,8 @@
         <h2>Foodie Recommendations</h2>
         <div id="recList">Loading...</div>
         <div class="input-group" style="margin-top:15px;">
-            <select id="typeIn"><option>Podcast</option><option>Book</option><option>Restaurant</option></select>
-            <input type="text" id="contentIn" placeholder="Tell us more...">
+            <select id="typeIn"><option>Podcast</option><option>Book</option><option>Restaurant</option><option>Gadget</option></select>
+            <input type="text" id="contentIn" placeholder="Share your favorite...">
             <button class="btn" onclick="saveToSheet('Recommendations', ['typeIn', 'contentIn'])">Share</button>
         </div>
     </section>
@@ -95,9 +97,10 @@
             // Suggestions
             const suggs = await (await fetch(WEB_APP_URL + "?sheet=Suggestions")).json();
             const suggDiv = document.getElementById("suggestionList");
-            suggDiv.innerHTML = "";
-            suggs.sort((a,b) => (b[1]||0) - (a[1]||0)).forEach(row => {
-                suggDiv.innerHTML += `<div class="suggestion-item"><span>${row[0]}</span><div><b style="color:var(--lib-gold)">${row[1]||0}</b> <button class="vote-btn" onclick="vote('${row[0]}')">↑</button> <button class="delete-btn" onclick="deleteEntry('Suggestions','${row[0]}')">×</button></div></div>`;
+            suggs.sort((a,b) => (b[1]||0) - (a[1]||0));
+            suggDiv.innerHTML = suggs.length ? "" : "No suggestions yet.";
+            suggs.forEach(row => {
+                suggDiv.innerHTML += `<div class="suggestion-item"><span>${row[0]}</span><div><b style="color:var(--lib-gold); margin-right:10px;">${row[1]||0}</b> <button class="vote-btn" onclick="vote('${row[0]}')">↑ Vote</button> <button class="delete-btn" onclick="deleteEntry('Suggestions','${row[0]}')">×</button></div></div>`;
             });
 
             // Archive
@@ -109,10 +112,10 @@
             const recDiv = document.getElementById("recList");
             recDiv.innerHTML = recs.length ? "" : "No recommendations yet.";
             recs.forEach(row => {
-                recDiv.innerHTML += `<div style="margin-bottom:8px"><b>${row[0]}:</b> ${row[1]} <button class="delete-btn" onclick="deleteEntry('Recommendations','${row[1]}')">×</button></div>`;
+                recDiv.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee;"><b>${row[0]}:</b> ${row[1]} <button class="delete-btn" onclick="deleteEntry('Recommendations','${row[1]}')">×</button></div>`;
             });
 
-        } catch (e) { console.error("Loading Error:", e); }
+        } catch (e) { console.error("Error:", e); }
     }
 
     function renderRecipes(data) {
@@ -120,14 +123,22 @@
         grid.innerHTML = data.length ? "" : "No recipes found.";
         data.forEach(row => {
             if(row[0]) {
-                grid.innerHTML += `<div class="recipe-card"><button class="delete-btn" onclick="deleteEntry('Archive','${row[0]}')">×</button><h3>${row[0]}</h3><p>${row[1]||''}</p><a href="${row[2]}" target="_blank" class="btn">View PDF</a></div>`;
+                grid.innerHTML += `
+                <div class="recipe-card">
+                    <div>
+                        <button class="delete-btn" onclick="deleteEntry('Archive','${row[0]}')">×</button>
+                        <h3>${row[0]}</h3>
+                        <p>${row[1]||''}</p>
+                    </div>
+                    <a href="${row[2]}" target="_blank" class="btn">View PDF</a>
+                </div>`;
             }
         });
     }
 
     async function saveToSheet(sheet, ids) {
         const vals = ids.map(id => document.getElementById(id).value);
-        if(vals.some(v => !v)) return;
+        if(vals.some(v => !v)) { alert("Please fill in all fields"); return; }
         await fetch(WEB_APP_URL + "?sheet=" + sheet, { method: "POST", mode: "no-cors", body: JSON.stringify(sheet === 'Suggestions' ? [vals[0], 0] : vals) });
         location.reload();
     }
@@ -138,21 +149,21 @@
     }
 
     async function deleteEntry(sheet, id) {
-        if(!confirm("Remove this entry?")) return;
+        if(!confirm("Are you sure you want to remove this?")) return;
         await fetch(`${WEB_APP_URL}?action=delete&id=${encodeURIComponent(id)}&sheet=${sheet}`, { method: "POST", mode: "no-cors" });
         location.reload();
     }
 
     function filterRecipes() {
         const term = document.getElementById("recipeSearch").value.toLowerCase();
-        renderRecipes(allRecipes.filter(r => r[0].toLowerCase().includes(term) || (r[1] && r[1].toLowerCase().includes(term))));
+        const filtered = allRecipes.filter(r => (r[0] && r[0].toLowerCase().includes(term)) || (r[1] && r[1].toLowerCase().includes(term)));
+        renderRecipes(filtered);
     }
 
-    // Countdown
     const nextMeeting = new Date("Feb 19, 2026 18:00:00").getTime();
     setInterval(() => {
         const now = new Date().getTime(), diff = nextMeeting - now;
-        const d = Math.floor(diff / 86400000), h = Math.floor((diff % 86400000) / 3600000), m = Math.floor((diff % 3600000) / 60000);
+        const d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000);
         document.getElementById("timer").innerHTML = d + "d " + h + "h " + m + "m ";
     }, 1000);
 
