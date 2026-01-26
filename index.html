@@ -10,15 +10,14 @@
         body { font-family: 'Fredoka', sans-serif; background: #f4f4f4; margin: 0; color: #333; }
         #countdown-container { background: var(--lib-navy); color: white; padding: 15px; text-align: center; font-weight: 600; border-bottom: 4px solid var(--lib-gold); }
         header {
-    text-align: center;
-    padding: 100px 20px; /* This gives the logo room to breathe */
-    background-color: var(--lib-navy);
-    background-image: linear-gradient(rgba(0, 51, 102, 0.5), rgba(0, 51, 102, 0.5)), 
-                      url('club-logo.jpg'); /* Make sure this name matches exactly! */
-    background-size: cover;
-    background-position: center;
-    color: white;
-}
+            text-align: center;
+            padding: 100px 20px;
+            background-color: var(--lib-navy);
+            background-image: linear-gradient(rgba(0, 51, 102, 0.5), rgba(0, 51, 102, 0.5)), url('club-logo.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
         .container { max-width: 950px; margin: 30px auto; padding: 20px; }
         .card { background: white; padding: 25px; margin-bottom: 25px; border-radius: 4px; border-left: 6px solid var(--lib-navy); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         h2 { color: var(--lib-navy); border-bottom: 2px solid var(--lib-light); padding-bottom: 10px; margin-top: 0; }
@@ -63,7 +62,37 @@
     </section>
 
     <section class="card">
-<h2>Suggest a Future Theme</h2>
+        <h2>Upcoming Meetings</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Theme</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Feb 19, 2026</td>
+                    <td>6:00 PM</td>
+                    <td>The Preppy Kitchen</td>
+                </tr>
+                <tr>
+                    <td>Mar 19, 2026</td>
+                    <td>6:00 PM</td>
+                    <td><em style="color:#888;">TBD (Suggest one below!)</em></td>
+                </tr>
+                <tr>
+                    <td>Apr 16, 2026</td>
+                    <td>6:00 PM</td>
+                    <td><em style="color:#888;">TBD</em></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="card">
+        <h2>Suggest a Future Theme</h2>
         <div id="suggestionList">Loading...</div>
         <div class="input-group" style="margin-top:15px;">
             <input type="text" id="suggIn" placeholder="Enter a cookbook or theme...">
@@ -102,35 +131,7 @@
                 const tr = rsvpBody.insertRow();
                 tr.innerHTML = `<td>${row[0]}</td><td>${row[1]}</td><td>${row[2]} <button class="delete-btn" onclick="deleteEntry('RSVPs','${row[1]}')">×</button></td>`;
             });
-<section class="card">
-    <h2>Upcoming Meetings</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Theme</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Feb 19, 2026</td>
-                <td>6:00 PM</td>
-                <td>The Preppy Kitchen</td>
-            </tr>
-            <tr>
-                <td>Mar 19, 2026</td>
-                <td>6:00 PM</td>
-                <td><em style="color:#888;">TBD (Suggest one below!)</em></td>
-            </tr>
-            <tr>
-                <td>Apr 16, 2026</td>
-                <td>6:00 PM</td>
-                <td><em style="color:#888;">TBD</em></td>
-            </tr>
-        </tbody>
-    </table>
-</section>
+
             // Suggestions
             const suggs = await (await fetch(WEB_APP_URL + "?sheet=Suggestions")).json();
             const suggDiv = document.getElementById("suggestionList");
@@ -160,15 +161,7 @@
         grid.innerHTML = data.length ? "" : "No recipes found.";
         data.forEach(row => {
             if(row[0]) {
-                grid.innerHTML += `
-                <div class="recipe-card">
-                    <div>
-                        <button class="delete-btn" onclick="deleteEntry('Archive','${row[0]}')">×</button>
-                        <h3>${row[0]}</h3>
-                        <p>${row[1]||''}</p>
-                    </div>
-                    <a href="${row[2]}" target="_blank" class="btn">View PDF</a>
-                </div>`;
+                grid.innerHTML += `<div class="recipe-card"><div><button class="delete-btn" onclick="deleteEntry('Archive','${row[0]}')">×</button><h3>${row[0]}</h3><p>${row[1]||''}</p></div><a href="${row[2]}" target="_blank" class="btn">View PDF</a></div>`;
             }
         });
     }
