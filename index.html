@@ -102,7 +102,35 @@
                 const tr = rsvpBody.insertRow();
                 tr.innerHTML = `<td>${row[0]}</td><td>${row[1]}</td><td>${row[2]} <button class="delete-btn" onclick="deleteEntry('RSVPs','${row[1]}')">×</button></td>`;
             });
-
+<section class="card">
+    <h2>Upcoming Meetings</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Theme</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Feb 19, 2026</td>
+                <td>6:00 PM</td>
+                <td>The Preppy Kitchen</td>
+            </tr>
+            <tr>
+                <td>Mar 19, 2026</td>
+                <td>6:00 PM</td>
+                <td><em style="color:#888;">TBD (Suggest one below!)</em></td>
+            </tr>
+            <tr>
+                <td>Apr 16, 2026</td>
+                <td>6:00 PM</td>
+                <td><em style="color:#888;">TBD</em></td>
+            </tr>
+        </tbody>
+    </table>
+</section>
             // Suggestions
             const suggs = await (await fetch(WEB_APP_URL + "?sheet=Suggestions")).json();
             const suggDiv = document.getElementById("suggestionList");
