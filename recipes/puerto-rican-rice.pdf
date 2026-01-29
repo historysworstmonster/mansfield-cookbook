@@ -1,6 +1,5 @@
-%PDF-1.7
-%
-
+%PDF-1.4
+%âãÏÓ
 5 0 obj
 <<
 /Type /XObject
@@ -8,14 +7,11 @@
 /Name /Im0
 /Width 3300
 /Height 2550
-/DecodeParms <<
-/K -1
-/Columns 3300
->>
+/DecodeParms << /K -1 /Columns 3300 >>
 /BitsPerComponent 1
 /ColorSpace /DeviceGray
 /Filter /CCITTFaxDecode
-/Length 528478
+/Length 4 0 R
 >>
 stream
 ÿÿÿÿÿÌ„”Š#³£ÍP‘òŠt]Dè—Ì":6Œ”#¦vME>y¢uåôf	Õ*eLîS•e ¬L!e9NW•eY^WY\UeAXVåN ‚Èè¾aFhº3Ë¢B0Œò:$":4GÑ´}DtjG±0œÍEòñf3Í2t$tq¢ù­]¢0‰Ñµ‚HèPÁ‰#şB"4ByË @„M¡.ˆèXB)9S)Êô$t) „„Ae8!7‘ÑtÂA¤G@‹,§‘B#I	sÈDº!# @´â"mD|K¡0„›A$tGA" ÑŒC‘Öb# 	Y„B&TâaDtaˆ¤GDu‘ÑA @’<‚AÏaVV9Nw+9NS•APPåYPR
@@ -3310,7 +3306,18 @@ EZDf‹¡A7‰ÕŸDt%DúH‹"´„L“£³L±"Bˆ I$X„IB	‘Ú0B.‚,p@’ˆè!Ä ˜!	Ä
 …"èº/˜G‘Œº0Œ#èÂ#£ú#¡8’4B&hN˜›B"d«ÄÈQ @…„)aBËäx!HBF…‘Ø&Š‘ğ‡¸I£SˆŠI¤)l‚Pà‹¸¤Ái:DR+^L„…‘ô‘cˆI‘Ğ&GD}¤I4"-Nì&Gdt"X‚%;#èA,B“	¬R,p‚Qÿÿÿÿÿş  
 endstream
 endobj
-
+4 0 obj
+528478
+endobj
+6 0 obj
+<<
+/XObject
+<<
+ /Im0 5 0 R
+>>
+/ProcSet [ /PDF /ImageB ]
+>>
+endobj
 7 0 obj
 <<
 /Length 48
@@ -3323,38 +3330,55 @@ Q
 
 endstream
 endobj
-
-9 0 obj
+8 0 obj
 <<
-/Filter /FlateDecode
-/Type /ObjStm
-/N 6
-/First 32
-/Length 347
+/Type /Page
+/Parent 1 0 R
+/Rotate 270
+/Resources 6 0 R
+/MediaBox [ 0.000 0.000 792.000 612.000 ]
+/CropBox [ 0.000 0.000 792.000 612.000 ]
+/Contents [  7 0 R ]
 >>
-stream
-xœÕRMKÃ@½çWÌ­öP2;ÙDJÁ6ˆKõ Š‡˜,¥¢İ’nAÿ½³ÙÖB/%<f7ïÍÌîÎ€@ %d`r ²4(©€#f0'éã÷ÎBº¬×vŸ¤3wØzIz·i÷ğÂ2„¼&“IrÖÎj_¸u“@ÍI1ëlí7n[ÖŞÂUyMH	!3)ÍÕ q0äÔÎµ‡Æv0®æU…hQK†F¤’ãŒQ0ˆ÷ÌQÎk†‘Gğ?“!f7ÌUÚÄœÀ÷ZuÌŸsd­š2je÷¿}C¯y¬A§˜$éÂµ—w$¡Ñóğø
-îß^g©(—&ïGútÿönß›åöAæ†Ø<XÏ>I—eÌ²!¦—v	.	^él°VŸœ®œGym÷îĞ5ì$É…m7õÔ}q]äÏZ—åwu»HŒ„QP H]€ÒØ“në¹E°­9Ûö°Ü
-endstream
 endobj
-
-10 0 obj
+1 0 obj
 <<
-/Size 11
+/Type /Pages
+/Count 1
+/Kids [
+ 8 0 R
+]
+>>
+endobj
+2 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+>>
+endobj
+3 0 obj
+<<
+/CreationDate (D:20260121143447-05'00')
+>>
+endobj
+xref
+0 9
+0000000000 65535 f 
+0000529095 00000 n 
+0000529155 00000 n 
+0000529204 00000 n 
+0000528721 00000 n 
+0000000016 00000 n 
+0000528743 00000 n 
+0000528817 00000 n 
+0000528915 00000 n 
+trailer
+<<
+/Size 9
 /Root 2 0 R
 /Info 3 0 R
-/ID [ <8EDDF4EC6BDB7289442112B550265DB8> <8EDDF4EC6BDB7289442112B550265DB8> ]
-/Filter /FlateDecode
-/Type /XRef
-/Length 52
-/W [ 1 3 2 ]
-/Index [ 0 11 ]
+/ID [<8EDDF4EC6BDB7289442112B550265DB8><8EDDF4EC6BDB7289442112B550265DB8>]
 >>
-stream
-xœc```øÿŸ‰“L2‚I&0ÉÌÈÀ  gaä†²YìmŒÂå ›01
-endstream
-endobj
-
 startxref
-529271
+529265
 %%EOF
