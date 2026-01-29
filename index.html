@@ -165,7 +165,7 @@
         grid.innerHTML = data.length ? "" : "No recipes found.";
         data.forEach(row => {
             if(row[0]) {
-                grid.innerHTML += `<div class="recipe-card"><div><button class="delete-btn" onclick="deleteEntry('Archive','${row[0]}')">×</button><h3>${row[0]}</h3><p>${row[1]||''}</p></div><a href="${row[2]}" target="_blank" class="btn">View PDF</a></div>`;
+                grid.innerHTML += `<div class="recipe-card"><h3>${row[0]}</h3><p>${row[1]||''}</p></div><a href="${row[2]}" target="_blank" class="btn">View PDF</a></div>`;
             }
         });
     }
