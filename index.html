@@ -133,7 +133,7 @@
             rsvpBody.innerHTML = rsvp.length ? "" : "<tr><td colspan='3'>No signups yet.</td></tr>";
             rsvp.forEach(row => {
                 const tr = rsvpBody.insertRow();
-                tr.innerHTML = `<td>${row[0]}</td><td>${row[1]}</td><td>${row[2]} <button class="delete-btn" onclick="deleteEntry('RSVPs','${row[1]}')">×</button></td>`;
+                tr.innerHTML = `<td>${row[0]}</td><td>${row[1]}</td><td>${row[2]};
             });
 
             // Suggestions
@@ -142,7 +142,7 @@
             suggs.sort((a,b) => (b[1]||0) - (a[1]||0));
             suggDiv.innerHTML = suggs.length ? "" : "No suggestions yet.";
             suggs.forEach(row => {
-                suggDiv.innerHTML += `<div class="suggestion-item"><span>${row[0]}</span><div><b style="color:var(--lib-gold); margin-right:10px;">${row[1]||0}</b> <button class="vote-btn" onclick="vote('${row[0]}')">↑ Vote</button> <button class="delete-btn" onclick="deleteEntry('Suggestions','${row[0]}')">×</button></div></div>`;
+                suggDiv.innerHTML += `<div class="suggestion-item"><span>${row[0]}</span><div><b style="color:var(--lib-gold); margin-right:10px;">${row[1]||0}</b> <button class="vote-btn" onclick="vote('${row[0]}')">↑ Vote</button></div></div>`;
             });
 
             // Archive
@@ -154,7 +154,7 @@
             const recDiv = document.getElementById("recList");
             recDiv.innerHTML = recs.length ? "" : "No recommendations yet.";
             recs.forEach(row => {
-                recDiv.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee;"><b>${row[0]}:</b> ${row[1]} <button class="delete-btn" onclick="deleteEntry('Recommendations','${row[1]}')">×</button></div>`;
+                recDiv.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee;"><b>${row[0]}:</b> ${row[1]}</div>`;
             });
 
         } catch (e) { console.error("Error:", e); }
