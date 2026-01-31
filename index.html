@@ -95,6 +95,7 @@
 
     async function loadAll() {
         try {
+            // RSVPs
             const rsvp = await (await fetch(WEB_APP_URL + "?sheet=RSVPs")).json();
             const rsvpBody = document.querySelector("#dishTable tbody");
             rsvpBody.innerHTML = "";
@@ -103,6 +104,7 @@
                 tr.innerHTML = `<td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td>`;
             });
 
+            // Suggestions
             const suggs = await (await fetch(WEB_APP_URL + "?sheet=Suggestions")).json();
             const suggDiv = document.getElementById("suggestionList");
             suggs.sort((a,b) => (b[1]||0) - (a[1]||0));
@@ -111,12 +113,59 @@
                 suggDiv.innerHTML += `<div class="suggestion-item"><span>${row[0]}</span><div><b style="color:var(--lib-gold); margin-right:10px;">${row[1]||0}</b> <button class="vote-btn" onclick="vote('${row[0]}')">↑ Vote</button></div></div>`;
             });
 
+            // Archive
             allRecipes = await (await fetch(WEB_APP_URL + "?sheet=Archive")).json();
             renderRecipes(allRecipes);
 
+            // Recommendations
             const recs = await (await fetch(WEB_APP_URL + "?sheet=Recommendations")).json();
             const recDiv = document.getElementById("recList");
             recDiv.innerHTML = "";
             recs.forEach(row => {
                 recDiv.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee;"><b>${row[0]}:</b> ${row[1]}</div>`;
             });
+
+        } catch (e) { 
+            console.error("Error loading sheets:", e); 
+        }
+    }
+
+    function renderRecipes(data) {
+        const grid = document.getElementById("recipeGrid");
+        grid.innerHTML = "";
+        data.forEach(row => {
+            if(row[0]) {
+                grid.innerHTML += `<div class="recipe-card"><div><h3>${row[0]}</h3><p>${row[1]||''}</p></div><a href="${row[2]}" target="_blank" class="btn">View PDF</a></div>`;
+            }
+        });
+    }
+
+    async function saveToSheet(sheet, ids) {
+        const vals = ids.map(id => document.getElementById(id).value);
+        if(vals.some(v => !v)) { alert("Please fill in all fields"); return; }
+        await fetch(WEB_APP_URL + "?sheet=" + sheet, { method: "POST", mode: "no-cors", body: JSON.stringify(sheet === 'Suggestions' ? [vals[0], 0] : vals) });
+        location.reload();
+    }
+
+    async function vote(id) {
+        await fetch(`${WEB_APP_URL}?action=upvote&id=${encodeURIComponent(id)}&sheet=Suggestions`, { method: "POST", mode: "no-cors" });
+        location.reload();
+    }
+
+    function filterRecipes() {
+        const term = document.getElementById("recipeSearch").value.toLowerCase();
+        const filtered = allRecipes.filter(r => (r[0] && r[0].toLowerCase().includes(term)) || (r[1] && r[1].toLowerCase().includes(term)));
+        renderRecipes(filtered);
+    }
+
+    const nextMeeting = new Date("Feb 19, 2026 18:00:00").getTime();
+    setInterval(() => {
+        const now = new Date().getTime(), diff = nextMeeting - now;
+        const d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000);
+        document.getElementById("timer").innerHTML = d + "d " + h + "h " + m + "m ";
+    }, 1000);
+
+    window.onload = loadAll;
+</script>
+</body>
+</html>
