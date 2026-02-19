@@ -73,12 +73,20 @@
     </section>
 
     <section class="card">
+        <h2>Foodie Recommendations</h2>
+        <div id="recList">Loading...</div>
         <div class="input-group" style="margin-top:15px;">
-    <select id="typeIn"><option>Podcast</option><option>Book</option><option>Restaurant</option><option>Gadget</option></select>
-    <input type="text" id="contentIn" placeholder="Share your favorite...">
-    <input type="url" id="linkIn" placeholder="Link (URL)"> 
-    <button class="btn" onclick="saveToSheet('Recommendations', ['typeIn', 'contentIn', 'linkIn'])">Share</button>
-</div>
+            <select id="typeIn">
+                <option>Podcast</option>
+                <option>Book</option>
+                <option>Restaurant</option>
+                <option>Gadget</option>
+                <option>Website</option>
+            </select>
+            <input type="text" id="contentIn" placeholder="Share your favorite...">
+            <input type="url" id="linkIn" placeholder="Link (Optional)">
+            <button class="btn" onclick="saveToSheet('Recommendations', ['typeIn', 'contentIn', 'linkIn'])">Share</button>
+        </div>
     </section>
 
     <section class="card">
@@ -89,12 +97,11 @@
 </div>
 
 <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyHOqhawJUQ7Ru28P4snE9-IbNaY52Aco9r9kbfMzIXeYIBNKnlf6mDmDse7Dj_Xuw/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwxezI8eswlRSydlimQPE43OYft5auqv9KrJeK8K1G_rJlig0pCmAavwq8cmOPRZJIw/exec";
     let allRecipes = [];
 
     async function loadAll() {
         try {
-            // RSVPs
             const rsvp = await (await fetch(WEB_APP_URL + "?sheet=RSVPs")).json();
             const rsvpBody = document.querySelector("#dishTable tbody");
             rsvpBody.innerHTML = "";
@@ -103,7 +110,6 @@
                 tr.innerHTML = `<td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td>`;
             });
 
-            // Suggestions
             const suggs = await (await fetch(WEB_APP_URL + "?sheet=Suggestions")).json();
             const suggDiv = document.getElementById("suggestionList");
             suggs.sort((a,b) => (b[1]||0) - (a[1]||0));
@@ -112,27 +118,17 @@
                 suggDiv.innerHTML += `<div class="suggestion-item"><span>${row[0]}</span><div><b style="color:var(--lib-gold); margin-right:10px;">${row[1]||0}</b> <button class="vote-btn" onclick="vote('${row[0]}')">↑ Vote</button></div></div>`;
             });
 
-            // Archive
             allRecipes = await (await fetch(WEB_APP_URL + "?sheet=Archive")).json();
             renderRecipes(allRecipes);
 
-           // Recommendations
-const recs = await (await fetch(WEB_APP_URL + "?sheet=Recommendations")).json();
-const recDiv = document.getElementById("recList");
-recDiv.innerHTML = "";
-recs.forEach(row => {
-    // Check if there is a link in the 3rd column (row[2])
-    let linkHTML = row[2] ? `<br><a href="${row[2]}" target="_blank" style="color:var(--lib-gold); font-size:0.9rem;">View Link →</a>` : "";
-    
-    recDiv.innerHTML += `
-        <div style="padding:10px; border-bottom:1px solid #eee;">
-            <b>${row[0]}:</b> ${row[1]} ${linkHTML}
-        </div>`;
-});
-
-        } catch (e) { 
-            console.error("Error loading sheets:", e); 
-        }
+            const recs = await (await fetch(WEB_APP_URL + "?sheet=Recommendations")).json();
+            const recDiv = document.getElementById("recList");
+            recDiv.innerHTML = "";
+            recs.forEach(row => {
+                let linkHTML = row[2] ? `<br><a href="${row[2]}" target="_blank" style="color:var(--lib-gold); font-size:0.9rem; text-decoration:none; font-weight:bold;">View Link →</a>` : "";
+                recDiv.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee;"><b>${row[0]}:</b> ${row[1]} ${linkHTML}</div>`;
+            });
+        } catch (e) { console.error("Error:", e); }
     }
 
     function renderRecipes(data) {
@@ -147,7 +143,7 @@ recs.forEach(row => {
 
     async function saveToSheet(sheet, ids) {
         const vals = ids.map(id => document.getElementById(id).value);
-        if(vals.some(v => !v)) { alert("Please fill in all fields"); return; }
+        if(sheet !== 'Recommendations' && vals.some(v => !v)) { alert("Please fill in all fields"); return; }
         await fetch(WEB_APP_URL + "?sheet=" + sheet, { method: "POST", mode: "no-cors", body: JSON.stringify(sheet === 'Suggestions' ? [vals[0], 0] : vals) });
         location.reload();
     }
