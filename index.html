@@ -46,7 +46,7 @@
         <div class="input-group">
             <input type="text" id="nameIn" placeholder="Your Name">
             <input type="text" id="dishIn" placeholder="What are you bringing?">
-            <input type="text" id="sourceIn" placeholder="Page # or Source">
+            <input type="text" id="sourceIn" placeholder="Source (Link or Book)">
             <button class="btn" onclick="saveToSheet('RSVPs', ['nameIn', 'dishIn', 'sourceIn'])">Sign Up</button>
         </div>
     </section>
@@ -105,14 +105,23 @@
             const rsvp = await (await fetch(WEB_APP_URL + "?sheet=RSVPs")).json();
             const rsvpBody = document.querySelector("#dishTable tbody");
             rsvpBody.innerHTML = "";
-            rsvp.forEach(row => {
+         rsvp.forEach(row => {
     const tr = rsvpBody.insertRow();
-    // Check if the source (row[2]) is a web link
-    let sourceContent = row[2];
-    if (row[2] && (row[2].startsWith('http') || row[2].startsWith('www'))) {
-        const url = row[2].startsWith('www') ? `https://${row[2]}` : row[2];
-        sourceContent = `<a href="${url}" target="_blank" style="color:var(--lib-navy); font-weight:bold; text-decoration:underline;">Link</a>`;
+    let sourceContent = row[2] || "";
+    
+    // If it's a link, let's make it look nice
+    if (sourceContent.startsWith('http') || sourceContent.startsWith('www')) {
+        const url = sourceContent.startsWith('www') ? `https://${sourceContent}` : sourceContent;
+        try {
+            // This part extracts just the website name (e.g., epicurious.com)
+            const domain = new URL(url).hostname.replace('www.', '');
+            sourceContent = `<a href="${url}" target="_blank" style="color:var(--lib-navy); font-weight:bold; text-decoration:underline;">${domain}</a>`;
+        } catch(e) {
+            // Fallback if the URL is formatted weirdly
+            sourceContent = `<a href="${url}" target="_blank" style="color:var(--lib-navy); font-weight:bold; text-decoration:underline;">Link</a>`;
+        }
     }
+    
     tr.innerHTML = `<td>${row[0]}</td><td>${row[1]}</td><td>${sourceContent}</td>`;
 });
 
