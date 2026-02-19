@@ -106,9 +106,15 @@
             const rsvpBody = document.querySelector("#dishTable tbody");
             rsvpBody.innerHTML = "";
             rsvp.forEach(row => {
-                const tr = rsvpBody.insertRow();
-                tr.innerHTML = `<td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td>`;
-            });
+    const tr = rsvpBody.insertRow();
+    // Check if the source (row[2]) is a web link
+    let sourceContent = row[2];
+    if (row[2] && (row[2].startsWith('http') || row[2].startsWith('www'))) {
+        const url = row[2].startsWith('www') ? `https://${row[2]}` : row[2];
+        sourceContent = `<a href="${url}" target="_blank" style="color:var(--lib-navy); font-weight:bold; text-decoration:underline;">Link</a>`;
+    }
+    tr.innerHTML = `<td>${row[0]}</td><td>${row[1]}</td><td>${sourceContent}</td>`;
+});
 
             const suggs = await (await fetch(WEB_APP_URL + "?sheet=Suggestions")).json();
             const suggDiv = document.getElementById("suggestionList");
