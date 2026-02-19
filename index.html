@@ -73,13 +73,12 @@
     </section>
 
     <section class="card">
-        <h2>Foodie Recommendations</h2>
-        <div id="recList">Loading...</div>
         <div class="input-group" style="margin-top:15px;">
-            <select id="typeIn"><option>Podcast</option><option>Book</option><option>Restaurant</option><option>Gadget</option></select>
-            <input type="text" id="contentIn" placeholder="Share your favorite...">
-            <button class="btn" onclick="saveToSheet('Recommendations', ['typeIn', 'contentIn'])">Share</button>
-        </div>
+    <select id="typeIn"><option>Podcast</option><option>Book</option><option>Restaurant</option><option>Gadget</option></select>
+    <input type="text" id="contentIn" placeholder="Share your favorite...">
+    <input type="url" id="linkIn" placeholder="Link (URL)"> 
+    <button class="btn" onclick="saveToSheet('Recommendations', ['typeIn', 'contentIn', 'linkIn'])">Share</button>
+</div>
     </section>
 
     <section class="card">
@@ -90,7 +89,7 @@
 </div>
 
 <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwxezI8eswlRSydlimQPE43OYft5auqv9KrJeK8K1G_rJlig0pCmAavwq8cmOPRZJIw/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyHOqhawJUQ7Ru28P4snE9-IbNaY52Aco9r9kbfMzIXeYIBNKnlf6mDmDse7Dj_Xuw/exec";
     let allRecipes = [];
 
     async function loadAll() {
@@ -117,13 +116,19 @@
             allRecipes = await (await fetch(WEB_APP_URL + "?sheet=Archive")).json();
             renderRecipes(allRecipes);
 
-            // Recommendations
-            const recs = await (await fetch(WEB_APP_URL + "?sheet=Recommendations")).json();
-            const recDiv = document.getElementById("recList");
-            recDiv.innerHTML = "";
-            recs.forEach(row => {
-                recDiv.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee;"><b>${row[0]}:</b> ${row[1]}</div>`;
-            });
+           // Recommendations
+const recs = await (await fetch(WEB_APP_URL + "?sheet=Recommendations")).json();
+const recDiv = document.getElementById("recList");
+recDiv.innerHTML = "";
+recs.forEach(row => {
+    // Check if there is a link in the 3rd column (row[2])
+    let linkHTML = row[2] ? `<br><a href="${row[2]}" target="_blank" style="color:var(--lib-gold); font-size:0.9rem;">View Link →</a>` : "";
+    
+    recDiv.innerHTML += `
+        <div style="padding:10px; border-bottom:1px solid #eee;">
+            <b>${row[0]}:</b> ${row[1]} ${linkHTML}
+        </div>`;
+});
 
         } catch (e) { 
             console.error("Error loading sheets:", e); 
