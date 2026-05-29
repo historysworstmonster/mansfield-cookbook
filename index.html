@@ -194,7 +194,7 @@
         renderRecipes(filtered);
     }
 
-const nextMeeting = new Date("May 28, 2026 18:00:00").getTime();
+const nextMeeting = new Date("Jun 25, 2026 18:00:00").getTime();
     setInterval(() => {
         const now = new Date().getTime(), diff = nextMeeting - now;
         const d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000);
