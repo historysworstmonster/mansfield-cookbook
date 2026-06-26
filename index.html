@@ -56,33 +56,33 @@
         <table>
             <thead><tr><th>Date</th><th>Time</th><th>Theme</th><th>Action</th></tr></thead>
   <tbody>
-    <!-- June -->
-    <tr>
-        <td>Jun 25, 2026</td>
-        <td>6:00 PM</td>
-        <td>Jacques Pepin</td>
-        <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+Jacques+Pepin&dates=20260625T220000Z/20260625T230000Z&details=Bring+your+dish!&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
-    </tr>
     <!-- July -->
     <tr>
         <td>Jul 23, 2026</td>
         <td>6:00 PM</td>
         <td>Ice Cream, Sorbets, and other Frozen Treats</td>
-        <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+July+Meeting&dates=20260723T220000Z/20260723T230000Z&details=Theme+TBD&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
+        <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+Ice+Cream,+Sorbets,+and+Frozen+Treats&dates=20260723T220000Z/20260723T230000Z&details=Bring+your+favorite+frozen+dessert!&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
     </tr>
     <!-- August -->
     <tr>
         <td>Aug 20, 2026</td>
         <td>6:00 PM</td>
-        <td><em style="color:#888;">TBD (Suggest one below!)</em></td>
-        <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+August+Meeting&dates=20260820T220000Z/20260820T230000Z&details=Theme+TBD&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
+        <td>No-Bake</td>
+        <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+No-Bake+Theme&dates=20260820T220000Z/20260820T230000Z&details=Keep+it+cool+with+no-bake+recipes!&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
     </tr>
     <!-- September -->
+<tr>
+    <td>Sep 17, 2026</td>
+    <td>6:00 PM</td>
+    <td>Family Recipes</td>
+    <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+Family+Recipes&dates=20260917T220000Z/20260917T230000Z&details=Bring+a+treasured+family+recipe+to+share!&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
+</tr>
+    <!-- October -->
     <tr>
-        <td>Sep 17, 2026</td>
+        <td>Oct 15, 2026</td>
         <td>6:00 PM</td>
         <td><em style="color:#888;">TBD (Suggest one below!)</em></td>
-        <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+September+Meeting&dates=20260917T220000Z/20260917T230000Z&details=Theme+TBD&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
+        <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+October+Meeting&dates=20261015T220000Z/20261015T230000Z&details=Theme+TBD&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
     </tr>
 </tbody>
         </table>
@@ -199,7 +199,7 @@
         renderRecipes(filtered);
     }
 
-const nextMeeting = new Date("Jun 25, 2026 18:00:00").getTime();
+const nextMeeting = new Date("Jul 23, 2026 18:00:00").getTime();
     setInterval(() => {
         const now = new Date().getTime(), diff = nextMeeting - now;
         const d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000);
