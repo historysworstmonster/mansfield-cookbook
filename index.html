@@ -1,3 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mansfield Cook Book Club</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        :root { --lib-navy: #003366; --lib-gold: #b59410; --lib-light: #e6eff7; }
+        body { font-family: 'Fredoka', sans-serif; background: #f4f4f4; margin: 0; color: #333; }
+        #countdown-container { background: var(--lib-navy); color: white; padding: 15px; text-align: center; font-weight: 600; border-bottom: 4px solid var(--lib-gold); }
+        header { text-align: center; padding: 100px 20px; background-color: var(--lib-navy); background-image: linear-gradient(rgba(0, 51, 102, 0.5), rgba(0, 51, 102, 0.5)), url('club-logo.jpg'); background-size: cover; background-position: center; color: white; }
+        .container { max-width: 950px; margin: 30px auto; padding: 20px; }
+        .card { background: white; padding: 25px; margin-bottom: 25px; border-radius: 4px; border-left: 6px solid var(--lib-navy); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { color: var(--lib-navy); border-bottom: 2px solid var(--lib-light); padding-bottom: 10px; margin-top: 0; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th { text-align: left; background: var(--lib-light); padding: 10px; color: var(--lib-navy); }
+        td { padding: 10px; border-bottom: 1px solid #eee; }
+        .recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-top: 20px; }
+        .recipe-card { background: var(--lib-light); padding: 20px; border-radius: 8px; border: 1px solid #d1dee9; display: flex; flex-direction: column; justify-content: space-between; }
+        .recipe-card h3 { margin: 0 0 5px; font-size: 1.1rem; color: var(--lib-navy); }
+        .recipe-card p { margin: 0 0 15px; font-style: italic; color: #666; font-size: 0.9rem; }
+        .btn { background: var(--lib-navy); color: white; padding: 10px 15px; border: none; border-radius: 4px; text-decoration: none; font-weight: bold; cursor: pointer; text-align: center; font-family: 'Fredoka'; display: inline-block; }
+        .btn:hover { background: var(--lib-gold); }
+        .search-box { width: 100%; padding: 12px; margin-bottom: 20px; border: 2px solid var(--lib-light); border-radius: 4px; font-family: 'Fredoka'; box-sizing: border-box; }
+        .input-group { display: flex; gap: 10px; flex-wrap: wrap; background: #f9f9f9; padding: 15px; border-radius: 4px; }
+        input, select { padding: 10px; border: 1px solid #ddd; border-radius: 4px; flex: 1; font-family: 'Fredoka'; }
+        .suggestion-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; }
+        .vote-btn { background: white; color: var(--lib-navy); border: 1px solid var(--lib-navy); padding: 5px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .vote-btn:hover { background: var(--lib-navy); color: white; }
+    </style>
+</head>
+<body>
+
+<div id="countdown-container">⏳ Next Feast: <span id="timer">Loading...</span></div>
+
+<header><h1>Mansfield Cook Book Club</h1></header>
+
+<div class="container">
+    <!-- Dish Signup Section (Fixed Layout) -->
+    <section class="card">
+        <h2>Dish Signup: Ice Cream, Sorbets, and other Frozen Treats</h2>
+        <table id="dishTable">
+            <thead>
+                <tr><th>Member</th><th>Dish</th><th>Source</th></tr>
+            </thead>
+            <tbody>
+                <tr><td colspan="3">Loading signups...</td></tr>
+            </tbody>
+        </table>
+        <div class="input-group">
+            <input type="text" id="nameIn" placeholder="Your Name">
+            <input type="text" id="dishIn" placeholder="What are you bringing?">
+            <input type="text" id="sourceIn" placeholder="Source (Link or Book)">
+            <button class="btn" onclick="saveToSheet('RSVPs', ['nameIn', 'dishIn', 'sourceIn'])">Sign Up</button>
+        </div>
+    </section>
+
+    <!-- Upcoming Meetings Section (Fixed Layout) -->
+    <section class="card">
+        <h2>Upcoming Meetings</h2>
+        <table>
+            <thead>
+                <tr><th>Date</th><th>Time</th><th>Theme</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+                <!-- July -->
+                <tr>
+                    <td>Jul 23, 2026</td>
+                    <td>6:00 PM</td>
+                    <td>Ice Cream, Sorbets, and other Frozen Treats</td>
+                    <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+Ice+Cream,+Sorbets,+and+Frozen+Treats&dates=20260723T220000Z/20260723T230000Z&details=Bring+your+favorite+frozen+dessert!&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
+                </tr>
+                <!-- August -->
+                <tr>
+                    <td>Aug 20, 2026</td>
+                    <td>6:00 PM</td>
+                    <td>No-Bake</td>
+                    <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+No-Bake+Theme&dates=20260820T220000Z/20260820T230000Z&details=Keep+it+cool+with+no-bake+recipes!&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
+                </tr>
+                <!-- September -->
+                <tr>
+                    <td>Sep 17, 2026</td>
+                    <td>6:00 PM</td>
+                    <td>Family Recipes</td>
+                    <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+Family+Recipes&dates=20260917T220000Z/20260917T230000Z&details=Bring+a+treasured+family+recipe+to+share!&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
+                </tr>
+                <!-- October -->
+                <tr>
+                    <td>Oct 15, 2026</td>
+                    <td>6:00 PM</td>
+                    <td><em style="color:#888;">TBD (Suggest one below!)</em></td>
+                    <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+October+Meeting&dates=20261015T220000Z/20261015T230000Z&details=Theme+TBD&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="card">
+        <h2>Suggest a Future Theme</h2>
+        <div id="suggestionList">Loading...</div>
+        <div class="input-group" style="margin-top:15px;">
+            <input type="text" id="suggIn" placeholder="Enter a cookbook or theme...">
+            <button class="btn" onclick="saveToSheet('Suggestions', ['suggIn'])">Submit Idea</button>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>Foodie Recommendations</h2>
+        <div id="recList">Loading...</div>
+        <div class="input-group" style="margin-top:15px;">
+            <select id="typeIn">
+                <option>Podcast</option>
+                <option>Book</option>
+                <option>Restaurant</option>
+                <option>Gadget</option>
+                <option>Website</option>
+            </select>
+            <input type="text" id="contentIn" placeholder="Share your favorite...">
+            <input type="url" id="linkIn" placeholder="Link (Optional)">
+            <button class="btn" onclick="saveToSheet('Recommendations', ['typeIn', 'contentIn', 'linkIn'])">Share</button>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>Digital Recipe Archive</h2>
+        <input type="text" id="recipeSearch" class="search-box" placeholder="Search archive..." onkeyup="filterRecipes()">
+        <div id="recipeGrid" class="recipe-grid">Loading archive...</div>
+    </section>
+</div>
+
 <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwxezI8eswlRSydlimQPE43OYft5auqv9KrJeK8K1G_rJlig0pCmAavwq8cmOPRZJIw/exec";
     let allRecipes = [];
@@ -12,7 +143,6 @@
                 const tr = rsvpBody.insertRow();
                 let sourceContent = row[2] || "";
                 
-                // Format links beautifully
                 if (sourceContent.startsWith('http') || sourceContent.startsWith('www')) {
                     const url = sourceContent.startsWith('www') ? `https://${sourceContent}` : sourceContent;
                     try {
@@ -44,9 +174,7 @@
                 let linkHTML = row[2] ? `<br><a href="${row[2]}" target="_blank" style="color:var(--lib-gold); font-size:0.9rem; text-decoration:none; font-weight:bold;">View Link →</a>` : "";
                 recDiv.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee;"><b>${row[0]}:</b> ${row[1]} ${linkHTML}</div>`;
             });
-        } catch (e) { 
-            console.error("Error:", e); 
-        }
+        } catch (e) { console.error("Error:", e); }
     }
 
     function renderRecipes(data) {
@@ -86,3 +214,5 @@
 
     window.onload = loadAll;
 </script>
+</body>
+</html>
