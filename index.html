@@ -65,12 +65,12 @@
             </thead>
             <tbody>
                 <!-- August -->
-                <tr>
-                    <td>Aug 27, 2026</td>
-                    <td>6:00 PM</td>
-                    <td>No-Bake</td>
-                    <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+No-Bake+Theme&dates=20260820T220000Z/20260820T230000Z&details=Keep+it+cool+with+no-bake+recipes!&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
-                </tr>
+<tr>
+    <td>Aug 27, 2026</td>
+    <td>6:00 PM</td>
+    <td>No-Bake</td>
+    <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+No-Bake+Theme&dates=20260827T220000Z/20260827T230000Z&details=Keep+it+cool+with+no-bake+recipes!&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
+</tr>
                 <!-- September -->
                 <tr>
                     <td>Sep 24, 2026</td>
@@ -205,7 +205,7 @@
         renderRecipes(filtered);
     }
 
-    const nextMeeting = new Date("Jul 23, 2026 18:00:00").getTime();
+const nextMeeting = new Date("Aug 27, 2026 18:00:00").getTime();
     setInterval(() => {
         const now = new Date().getTime(), diff = nextMeeting - now;
         const d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000);
