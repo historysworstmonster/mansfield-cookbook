@@ -63,8 +63,8 @@
             <thead>
                 <tr><th>Date</th><th>Time</th><th>Theme</th><th>Action</th></tr>
             </thead>
-           <tbody>
-  <!-- September -->
+          <tbody>
+    <!-- September -->
     <tr>
         <td>Sep 24, 2026</td>
         <td>6:00 PM</td>
@@ -75,15 +75,22 @@
     <tr>
         <td>Oct 15, 2026</td>
         <td>6:00 PM</td>
-        <td>Thanksgiving Sides</em></td>
-        <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+October+Meeting&dates=20261015T220000Z/20261015T230000Z&details=Theme+TBD&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
+        <td>Thanksgiving Sides</td>
+        <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+Thanksgiving+Sides&dates=20261015T220000Z/20261015T230000Z&details=Bring+a+Thanksgiving+side+dish+to+share!&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
     </tr>
     <!-- November -->
     <tr>
         <td>Nov 19, 2026</td>
         <td>6:00 PM</td>
-        <td>Hors d'oeuvres</em></td>
-        <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+November+Meeting&dates=20261119T220000Z/20261119T230000Z&details=Theme+TBD&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
+        <td>Hors d'oeuvres</td>
+        <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+Hors+d%27oeuvres&dates=20261119T220000Z/20261119T230000Z&details=Bring+an+hors+d%27oeuvre+to+share!&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
+    </tr>
+    <!-- December -->
+    <tr>
+        <td>Dec 17, 2026</td>
+        <td>6:00 PM</td>
+        <td>Cookie Swap</td>
+        <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+Cookie+Swap&dates=20261217T230000Z/20261218T000000Z&details=Bring+a+batch+of+your+favorite+cookies+to+swap!&location=Mansfield+Public+Library" target="_blank" style="font-size: 0.8rem;">+ Add to Calendar</a></td>
     </tr>
 </tbody>
         </table>
@@ -198,7 +205,7 @@
         renderRecipes(filtered);
     }
 
-const nextMeeting = new Date("Aug 27, 2026 18:00:00").getTime();
+const nextMeeting = new Date("Sep 24, 2026 18:00:00").getTime();
     setInterval(() => {
         const now = new Date().getTime(), diff = nextMeeting - now;
         const d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000);
