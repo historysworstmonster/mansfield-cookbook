@@ -41,7 +41,8 @@
             text-align: center; 
             padding: 100px 20px; 
             background-color: var(--primary-dark); 
-            background-image: linear-gradient(rgba(122, 62, 32, 0.65), rgba(122, 62, 32, 0.65)), url('club-logo.jpg'); 
+            /* Lighter, neutral warm-charcoal overlay so club-logo.jpg shows through clearly */
+            background-image: linear-gradient(rgba(43, 38, 33, 0.45), rgba(43, 38, 33, 0.45)), url('club-logo.jpg'); 
             background-size: cover; 
             background-position: center; 
             color: #f7f4ed; 
@@ -53,7 +54,7 @@
             font-weight: 600; 
             letter-spacing: 0.5px; 
             color: #ffffff;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.4); 
+            text-shadow: 0 2px 10px rgba(0,0,0,0.65); 
         }
 
         .container { max-width: 950px; margin: 40px auto; padding: 0 20px; }
@@ -112,12 +113,13 @@
             text-align: center; 
             font-family: 'Fredoka', sans-serif; 
             display: inline-block; 
-            transition: background 0.2s;
+            transition: background 0.2s, opacity 0.2s;
         }
         .btn:hover { background: #8e3f2a; }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
         .search-box { width: 100%; padding: 14px 18px; margin-bottom: 15px; border: 1px solid var(--border-color); border-radius: 10px; font-family: 'Fredoka'; box-sizing: border-box; font-size: 0.95rem; background: #fff; }
-        .search-box:focus { outline: none; border-color: var(--accent-terracotta); box-shadow: 0 0 0 3px rgba(168, 78, 53, 0.12); }
+        .search-box:focus { outline: none; border-color: var(--accent-terracotta); box-shadow: 0 0 0 3px rgba(189, 86, 59, 0.12); }
 
         .filter-buttons { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
         .filter-btn { 
@@ -136,13 +138,14 @@
 
         .input-group { display: flex; gap: 12px; flex-wrap: wrap; background: #f4eee3; padding: 20px; border-radius: 12px; margin-top: 15px; border: 1px solid var(--border-color); }
         input, select { padding: 12px 14px; border: 1px solid var(--border-color); border-radius: 8px; flex: 1; font-family: 'Fredoka'; font-size: 0.95rem; background: #fff; }
-        input:focus, select:focus { outline: none; border-color: var(--primary-dark); box-shadow: 0 0 0 3px rgba(122, 62, 32, 0.12); }
+        input:focus, select:focus { outline: none; border-color: var(--primary-dark); box-shadow: 0 0 0 3px rgba(140, 66, 37, 0.12); }
 
         .suggestion-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-color); }
         .suggestion-item:last-child { border-bottom: none; }
         
-        .vote-btn { background: #fff; color: var(--primary-dark); border: 1px solid var(--primary-dark); padding: 6px 14px; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+        .vote-btn { background: #fff; color: var(--primary-dark); border: 1px solid var(--primary-dark); padding: 6px 14px; border-radius: 8px; font-weight: 500; cursor: pointer; font-family: 'Fredoka', sans-serif; transition: all 0.2s; }
         .vote-btn:hover { background: var(--primary-dark); color: white; }
+        .vote-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .toast { position: fixed; bottom: 25px; right: 25px; background: var(--primary-dark); color: white; padding: 14px 22px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: none; z-index: 1000; font-weight: 500; border-left: 5px solid var(--accent-gold); }
     </style>
@@ -150,7 +153,7 @@
 <body>
 
 <div id="countdown-container">⏳ Next Feast: <span id="timer">Loading...</span></div>
-<div id="toast" class="toast">Signup saved successfully! Refreshing...</div>
+<div id="toast" class="toast">Saved! Refreshing page...</div>
 
 <header>
     <h1>Mansfield Cook Book Club</h1>
@@ -172,10 +175,10 @@
             </table>
         </div>
         <div class="input-group">
-            <input type="text" id="nameIn" placeholder="Your Name">
-            <input type="text" id="dishIn" placeholder="What are you bringing?">
-            <input type="text" id="sourceIn" placeholder="Source (Link/Book)">
-            <button class="btn" onclick="saveToSheet('RSVPs', ['nameIn', 'dishIn', 'sourceIn'])">Sign Up</button>
+            <input type="text" id="nameIn" placeholder="Your Name" aria-label="Your Name">
+            <input type="text" id="dishIn" placeholder="What are you bringing?" aria-label="What are you bringing?">
+            <input type="text" id="sourceIn" placeholder="Source (Link/Book)" aria-label="Recipe Source">
+            <button class="btn" onclick="saveToSheet('RSVPs', ['nameIn', 'dishIn', 'sourceIn'], this)">Sign Up</button>
         </div>
     </section>
 
@@ -192,19 +195,19 @@
                         <td>Nov 19, 2026</td>
                         <td>6:00 PM</td>
                         <td>Hors d'oeuvres</td>
-                        <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+Hors+d%27oeuvres&dates=20261119T220000Z/20261119T230000Z&details=Bring+an+hors+d%27oeuvre+to+share!&location=Mansfield+Public+Library" target="_blank" style="color: var(--primary-dark); font-weight: 500; text-decoration: underline;">+ Calendar</a></td>
+                        <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+Hors+d%27oeuvres&dates=20261119T230000Z/20261120T000000Z&details=Bring+an+hors+d%27oeuvre+to+share!&location=Mansfield+Public+Library" target="_blank" rel="noopener noreferrer" style="color: var(--primary-dark); font-weight: 500; text-decoration: underline;">+ Calendar</a></td>
                     </tr>
                     <tr>
                         <td>Dec 17, 2026</td>
                         <td>6:00 PM</td>
                         <td>Cookie Swap</td>
-                        <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+Cookie+Swap&dates=20261217T230000Z/20261218T000000Z&details=Bring+a+batch+of+your+favorite+cookies+to+swap!&location=Mansfield+Public+Library" target="_blank" style="color: var(--primary-dark); font-weight: 500; text-decoration: underline;">+ Calendar</a></td>
+                        <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+Cookie+Swap&dates=20261217T230000Z/20261218T000000Z&details=Bring+a+batch+of+your+favorite+cookies+to+swap!&location=Mansfield+Public+Library" target="_blank" rel="noopener noreferrer" style="color: var(--primary-dark); font-weight: 500; text-decoration: underline;">+ Calendar</a></td>
                     </tr>
                     <tr>
                         <td>Jan 21, 2027</td>
                         <td>6:00 PM</td>
                         <td>Bread & Quick Breads</td>
-                        <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+Bread+%26+Quick+Breads&dates=20270121T230000Z/20270122T000000Z&details=Bring+a+bread+or+quick+bread+to+share!&location=Mansfield+Public+Library" target="_blank" style="color: var(--primary-dark); font-weight: 500; text-decoration: underline;">+ Calendar</a></td>
+                        <td><a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cookbook+Club:+Bread+%26+Quick+Breads&dates=20270121T230000Z/20270122T000000Z&details=Bring+a+bread+or+quick+bread+to+share!&location=Mansfield+Public+Library" target="_blank" rel="noopener noreferrer" style="color: var(--primary-dark); font-weight: 500; text-decoration: underline;">+ Calendar</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -216,8 +219,8 @@
         <h2>Suggest a Future Theme</h2>
         <div id="suggestionList" style="color: var(--text-muted); font-style: italic;">Loading suggestions...</div>
         <div class="input-group" style="margin-top:15px;">
-            <input type="text" id="suggIn" placeholder="Enter a theme idea...">
-            <button class="btn" onclick="saveToSheet('Suggestions', ['suggIn'])">Submit Idea</button>
+            <input type="text" id="suggIn" placeholder="Enter a theme idea..." aria-label="Enter a theme idea">
+            <button class="btn" onclick="saveToSheet('Suggestions', ['suggIn'], this)">Submit Idea</button>
         </div>
     </section>
 
@@ -226,22 +229,23 @@
         <h2>Foodie Recommendations</h2>
         <div id="recList" style="color: var(--text-muted); font-style: italic;">Loading recommendations...</div>
         <div class="input-group" style="margin-top:15px;">
-            <select id="typeIn" style="max-width: 130px;">
+            <select id="typeIn" style="max-width: 130px;" aria-label="Recommendation Type">
                 <option>Book</option>
                 <option>Podcast</option>
+                <option>Restaurant</option>
                 <option>Gadget</option>
                 <option>Website</option>
             </select>
-            <input type="text" id="contentIn" placeholder="Share your favorite...">
-            <input type="url" id="linkIn" placeholder="Link (Optional)">
-            <button class="btn" onclick="saveToSheet('Recommendations', ['typeIn', 'contentIn', 'linkIn'])">Share</button>
+            <input type="text" id="contentIn" placeholder="Share your favorite..." aria-label="Recommendation Description">
+            <input type="url" id="linkIn" placeholder="Link (Optional)" aria-label="Optional Link">
+            <button class="btn" onclick="saveToSheet('Recommendations', ['typeIn', 'contentIn', 'linkIn'], this)">Share</button>
         </div>
     </section>
 
     <!-- Digital Recipe Archive -->
     <section class="card">
         <h2>Digital Recipe Archive</h2>
-        <input type="text" id="recipeSearch" class="search-box" placeholder="Search archive by keyword..." onkeyup="filterRecipes()">
+        <input type="text" id="recipeSearch" class="search-box" placeholder="Search archive by keyword..." aria-label="Search archive by keyword" onkeyup="filterRecipes()">
         <div class="filter-buttons">
             <button class="filter-btn active" onclick="setFilter('all', this)">All Recipes</button>
             <button class="filter-btn" onclick="setFilter('dessert', this)">Desserts & Sweets</button>
@@ -261,144 +265,155 @@
         return document.createTextNode(text || "");
     }
 
-    async function loadAll() {
+    function safeUrl(rawUrl) {
+        if (!rawUrl) return null;
+        const trimmed = String(rawUrl).trim();
+        const withProtocol = trimmed.startsWith('www.') ? `https://${trimmed}` : trimmed;
         try {
-            // Load RSVPs
-            try {
-                const rsvpRes = await fetch(WEB_APP_URL + "?sheet=RSVPs");
-                const rsvp = await rsvpRes.json();
-                const rsvpBody = document.querySelector("#dishTable tbody");
-                rsvpBody.innerHTML = "";
-                
-                if (!rsvp || rsvp.length === 0) {
+            const parsed = new URL(withProtocol);
+            if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+                return parsed.href;
+            }
+        } catch (e) {}
+        return null;
+    }
+
+    async function loadRSVPs() {
+        try {
+            const rsvpRes = await fetch(WEB_APP_URL + "?sheet=RSVPs");
+            const rsvp = await rsvpRes.json();
+            const rsvpBody = document.querySelector("#dishTable tbody");
+            rsvpBody.innerHTML = "";
+            
+            if (!rsvp || rsvp.length === 0) {
+                const tr = rsvpBody.insertRow();
+                const td = tr.insertCell();
+                td.colSpan = 3;
+                td.style.textAlign = "center";
+                td.style.color = "var(--text-muted)";
+                td.style.padding = "20px";
+                td.appendChild(safeTextNode("No signups yet. Be the first!"));
+            } else {
+                rsvp.forEach(row => {
                     const tr = rsvpBody.insertRow();
-                    const td = tr.insertCell();
-                    td.colSpan = 3;
-                    td.style.textAlign = "center";
-                    td.style.color = "var(--text-muted)";
-                    td.style.padding = "20px";
-                    td.appendChild(safeTextNode("No signups yet. Be the first!"));
-                } else {
-                    rsvp.forEach(row => {
-                        const tr = rsvpBody.insertRow();
-                        const tdName = tr.insertCell();
-                        tdName.appendChild(safeTextNode(row[0]));
-                        const tdDish = tr.insertCell();
-                        tdDish.appendChild(safeTextNode(row[1]));
-                        const tdSource = tr.insertCell();
-                        let sourceContent = row[2] || "";
-                        
-                        if (sourceContent.startsWith('http') || sourceContent.startsWith('www')) {
-                            const url = sourceContent.startsWith('www') ? `https://${sourceContent}` : sourceContent;
-                            try {
-                                const domain = new URL(url).hostname.replace('www.', '');
-                                const a = document.createElement('a');
-                                a.href = url;
-                                a.target = "_blank";
-                                a.rel = "noopener noreferrer";
-                                a.style.color = "var(--primary-dark)";
-                                a.style.fontWeight = "500";
-                                a.style.textDecoration = "underline";
-                                a.appendChild(safeTextNode(domain));
-                                tdSource.appendChild(a);
-                            } catch(e) {
-                                const a = document.createElement('a');
-                                a.href = url;
-                                a.target = "_blank";
-                                a.rel = "noopener noreferrer";
-                                a.style.color = "var(--primary-dark)";
-                                a.style.fontWeight = "500";
-                                a.style.textDecoration = "underline";
-                                a.appendChild(safeTextNode("Link"));
-                                tdSource.appendChild(a);
-                            }
-                        } else {
-                            tdSource.appendChild(safeTextNode(sourceContent));
-                        }
-                    });
-                }
-            } catch (err) {
-                console.error("Error loading RSVPs:", err);
-            }
-
-            // Load Suggestions
-            try {
-                const suggsRes = await fetch(WEB_APP_URL + "?sheet=Suggestions");
-                const suggs = await suggsRes.json();
-                const suggDiv = document.getElementById("suggestionList");
-                suggs.sort((a,b) => (b[1]||0) - (a[1]||0));
-                suggDiv.innerHTML = "";
-                
-                suggs.forEach(row => {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = "suggestion-item";
-                    const span = document.createElement('span');
-                    span.appendChild(safeTextNode(row[0]));
-                    const rightDiv = document.createElement('div');
-                    const b = document.createElement('b');
-                    b.style.color = "var(--accent-gold)";
-                    b.style.marginRight = "12px";
-                    b.appendChild(safeTextNode(row[1] || 0));
-                    const btn = document.createElement('button');
-                    btn.className = "vote-btn";
-                    btn.appendChild(safeTextNode("↑ Vote"));
-                    btn.onclick = () => vote(row[0]);
-                    rightDiv.appendChild(b);
-                    rightDiv.appendChild(btn);
-                    itemDiv.appendChild(span);
-                    itemDiv.appendChild(rightDiv);
-                    suggDiv.appendChild(itemDiv);
-                });
-            } catch (err) {
-                document.getElementById("suggestionList").innerHTML = "Could not load suggestions.";
-            }
-
-            // Load Archive
-            try {
-                const archiveRes = await fetch(WEB_APP_URL + "?sheet=Archive");
-                allRecipes = await archiveRes.json();
-                renderRecipes(allRecipes);
-            } catch (err) {
-                document.getElementById("recipeGrid").innerHTML = "Could not load recipe archive.";
-            }
-
-            // Load Recommendations
-            try {
-                const recsRes = await fetch(WEB_APP_URL + "?sheet=Recommendations");
-                const recs = await recsRes.json();
-                const recDiv = document.getElementById("recList");
-                recDiv.innerHTML = "";
-                
-                recs.forEach(row => {
-                    const recItem = document.createElement('div');
-                    recItem.style.padding = "10px 0";
-                    recItem.style.borderBottom = "1px solid var(--border-color)";
-                    const boldTitle = document.createElement('b');
-                    boldTitle.appendChild(safeTextNode(row[0] + ": "));
-                    recItem.appendChild(boldTitle);
-                    recItem.appendChild(safeTextNode(row[1]));
-                    if (row[2]) {
-                        recItem.appendChild(document.createElement('br'));
+                    tr.insertCell().appendChild(safeTextNode(row[0]));
+                    tr.insertCell().appendChild(safeTextNode(row[1]));
+                    
+                    const tdSource = tr.insertCell();
+                    const validUrl = safeUrl(row[2]);
+                    if (validUrl) {
                         const a = document.createElement('a');
-                        a.href = row[2];
+                        a.href = validUrl;
                         a.target = "_blank";
                         a.rel = "noopener noreferrer";
-                        a.style.color = "var(--accent-gold)";
-                        a.style.fontSize = "0.9rem";
-                        a.style.textDecoration = "none";
-                        a.style.fontWeight = "600";
-                        a.appendChild(safeTextNode("View Link →"));
-                        recItem.appendChild(a);
+                        a.style.color = "var(--primary-dark)";
+                        a.style.fontWeight = "500";
+                        a.style.textDecoration = "underline";
+                        try {
+                            const domain = new URL(validUrl).hostname.replace('www.', '');
+                            a.appendChild(safeTextNode(domain));
+                        } catch (e) {
+                            a.appendChild(safeTextNode("Link"));
+                        }
+                        tdSource.appendChild(a);
+                    } else {
+                        tdSource.appendChild(safeTextNode(row[2] || ""));
                     }
-                    recDiv.appendChild(recItem);
                 });
-            } catch (err) {
-                document.getElementById("recList").innerHTML = "Could not load recommendations.";
             }
-
-        } catch (e) { 
-            console.error("General error:", e); 
+        } catch (err) {
+            console.error("Error loading RSVPs:", err);
         }
+    }
+
+    async function loadSuggestions() {
+        try {
+            const suggsRes = await fetch(WEB_APP_URL + "?sheet=Suggestions");
+            const suggs = await suggsRes.json();
+            const suggDiv = document.getElementById("suggestionList");
+            suggs.sort((a,b) => (b[1]||0) - (a[1]||0));
+            suggDiv.innerHTML = "";
+            
+            suggs.forEach(row => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = "suggestion-item";
+                const span = document.createElement('span');
+                span.appendChild(safeTextNode(row[0]));
+                const rightDiv = document.createElement('div');
+                const b = document.createElement('b');
+                b.style.color = "var(--accent-gold)";
+                b.style.marginRight = "12px";
+                b.appendChild(safeTextNode(row[1] || 0));
+                const btn = document.createElement('button');
+                btn.className = "vote-btn";
+                btn.appendChild(safeTextNode("↑ Vote"));
+                btn.onclick = () => vote(row[0], btn);
+                rightDiv.appendChild(b);
+                rightDiv.appendChild(btn);
+                itemDiv.appendChild(span);
+                itemDiv.appendChild(rightDiv);
+                suggDiv.appendChild(itemDiv);
+            });
+        } catch (err) {
+            document.getElementById("suggestionList").textContent = "Could not load suggestions.";
+        }
+    }
+
+    async function loadArchive() {
+        try {
+            const archiveRes = await fetch(WEB_APP_URL + "?sheet=Archive");
+            allRecipes = await archiveRes.json();
+            renderRecipes(allRecipes);
+        } catch (err) {
+            document.getElementById("recipeGrid").textContent = "Could not load recipe archive.";
+        }
+    }
+
+    async function loadRecommendations() {
+        try {
+            const recsRes = await fetch(WEB_APP_URL + "?sheet=Recommendations");
+            const recs = await recsRes.json();
+            const recDiv = document.getElementById("recList");
+            recDiv.innerHTML = "";
+            
+            recs.forEach(row => {
+                const recItem = document.createElement('div');
+                recItem.style.padding = "10px 0";
+                recItem.style.borderBottom = "1px solid var(--border-color)";
+                const boldTitle = document.createElement('b');
+                boldTitle.appendChild(safeTextNode(row[0] + ": "));
+                recItem.appendChild(boldTitle);
+                recItem.appendChild(safeTextNode(row[1]));
+                
+                const validUrl = safeUrl(row[2]);
+                if (validUrl) {
+                    recItem.appendChild(document.createElement('br'));
+                    const a = document.createElement('a');
+                    a.href = validUrl;
+                    a.target = "_blank";
+                    a.rel = "noopener noreferrer";
+                    a.style.color = "var(--accent-gold)";
+                    a.style.fontSize = "0.9rem";
+                    a.style.textDecoration = "none";
+                    a.style.fontWeight = "600";
+                    a.appendChild(safeTextNode("View Link →"));
+                    recItem.appendChild(a);
+                }
+                recDiv.appendChild(recItem);
+            });
+        } catch (err) {
+            document.getElementById("recList").textContent = "Could not load recommendations.";
+        }
+    }
+
+    function loadAll() {
+        // Load all 4 sheets simultaneously for faster page load
+        Promise.allSettled([
+            loadRSVPs(),
+            loadSuggestions(),
+            loadArchive(),
+            loadRecommendations()
+        ]);
     }
 
     function renderRecipes(data) {
@@ -411,9 +426,9 @@
             const matchesSearch = row[0].toLowerCase().includes(term) || (row[1] && row[1].toLowerCase().includes(term));
             if (currentCategory === 'all') return matchesSearch;
             const textContent = (row[0] + " " + (row[1] || "")).toLowerCase();
-            if (currentCategory === 'dessert') return matchesSearch && (textContent.includes('ice cream') || textContent.includes('cookie') || textContent.includes('sweet') || textContent.includes('chocolate'));
-            if (currentCategory === 'savory') return matchesSearch && (textContent.includes('chicken') || textContent.includes('soup') || textContent.includes('bake'));
-            if (currentCategory === 'side') return matchesSearch && (textContent.includes('salad') || textContent.includes('side') || textContent.includes('gazpacho'));
+            if (currentCategory === 'dessert') return matchesSearch && (textContent.includes('ice cream') || textContent.includes('cookie') || textContent.includes('sweet') || textContent.includes('chocolate') || textContent.includes('cake') || textContent.includes('pie'));
+            if (currentCategory === 'savory') return matchesSearch && (textContent.includes('chicken') || textContent.includes('soup') || textContent.includes('bake') || textContent.includes('beef') || textContent.includes('pork') || textContent.includes('pasta'));
+            if (currentCategory === 'side') return matchesSearch && (textContent.includes('salad') || textContent.includes('side') || textContent.includes('gazpacho') || textContent.includes('dip') || textContent.includes('bread'));
             return matchesSearch;
         });
 
@@ -438,8 +453,9 @@
             p.appendChild(safeTextNode(row[1] || ''));
             innerDiv.appendChild(h3);
             innerDiv.appendChild(p);
+            
             const btn = document.createElement('a');
-            btn.href = row[2];
+            btn.href = safeUrl(row[2]) || row[2] || "#";
             btn.target = "_blank";
             btn.rel = "noopener noreferrer";
             btn.className = "btn";
@@ -457,30 +473,75 @@
         renderRecipes(allRecipes);
     }
 
-    async function saveToSheet(sheet, ids) {
-        const vals = ids.map(id => document.getElementById(id).value);
-        if(sheet !== 'Recommendations' && vals.some(v => !v)) { alert("Please fill in all fields"); return; }
+    async function saveToSheet(sheet, ids, btnElement) {
+        const vals = ids.map(id => document.getElementById(id).value.trim());
+        
+        // Require all fields except the optional link in Recommendations
+        if (sheet === 'Recommendations') {
+            if (!vals[0] || !vals[1]) {
+                alert("Please enter a recommendation description.");
+                return;
+            }
+        } else if (vals.some(v => !v)) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        if (btnElement) {
+            btnElement.disabled = true;
+            btnElement.textContent = "Saving...";
+        }
+
         const toast = document.getElementById("toast");
         toast.style.display = "block";
-        await fetch(WEB_APP_URL + "?sheet=" + sheet, { method: "POST", mode: "no-cors", body: JSON.stringify(sheet === 'Suggestions' ? [vals[0], 0] : vals) });
+        
+        await fetch(WEB_APP_URL + "?sheet=" + sheet, { 
+            method: "POST", 
+            mode: "no-cors", 
+            body: JSON.stringify(sheet === 'Suggestions' ? [vals[0], 0] : vals) 
+        });
         setTimeout(() => { location.reload(); }, 1000);
     }
 
-    async function vote(id) {
+    async function vote(id, btnElement) {
+        if (btnElement) {
+            btnElement.disabled = true;
+            btnElement.textContent = "Voted!";
+        }
         await fetch(`${WEB_APP_URL}?action=upvote&id=${encodeURIComponent(id)}&sheet=Suggestions`, { method: "POST", mode: "no-cors" });
-        location.reload();
+        setTimeout(() => { location.reload(); }, 600);
     }
 
     function filterRecipes() {
         renderRecipes(allRecipes);
     }
 
-    const nextMeeting = new Date("Nov 19, 2026 18:00:00").getTime();
-    setInterval(() => {
-        const now = new Date().getTime(), diff = nextMeeting - now;
-        const d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000);
-        document.getElementById("timer").innerHTML = d + "d " + h + "h " + m + "m ";
-    }, 1000);
+    // Automatically roll over to the next upcoming meeting date
+    const meetingDates = [
+        new Date("Nov 19, 2026 18:00:00").getTime(),
+        new Date("Dec 17, 2026 18:00:00").getTime(),
+        new Date("Jan 21, 2027 18:00:00").getTime()
+    ];
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const nextMeeting = meetingDates.find(date => date > now);
+        const timerEl = document.getElementById("timer");
+        
+        if (!nextMeeting) {
+            timerEl.textContent = "Stay tuned for upcoming dates!";
+            return;
+        }
+        
+        const diff = nextMeeting - now;
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        timerEl.textContent = `${d}d ${h}h ${m}m`;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 30000);
 
     window.onload = loadAll;
 </script>
